@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <style>
+        .chat-window {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="chat-window">
+        <ul id="messages" class="list-group"></ul>
+        <input type="text" id="username" placeholder="Enter your name" class="form-control">
+        <textarea id="message" placeholder="Enter your message" class="form-control"></textarea>
+        <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+    </div>
+</div>
+<script>
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            stompClient.subscribe('/topic/public', function (messageOutput) {
+                showMessage(JSON.parse(messageOutput.body));
+            });
+
+            stompClient.send("/app/chat.addUser",
+                {},
+                JSON.stringify({sender: document.querySelector('#username').value, type: 'JOIN'})
+            );
+        });
+    }
+
+    function sendMessage() {
+        var messageContent = document.querySelector('#message').value;
+
+        if (messageContent && stompClient) {
+            var chatMessage = {
+                sender: document.querySelector('#username').value,
+                content: messageContent,
+                type: 'CHAT'
+            };
+
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+            document.querySelector('#message').value = '';
+        }
+    }
+
+    function showMessage(message) {
+        var messageElement = document.createElement('li');
+
+        if (message.type === 'JOIN') {
+            messageElement.classList.add('list-group-item', 'list-group-item-success');
+        } else if (message.type === 'LEAVE') {
+            messageElement.classList.add('list-group-item', 'list-group-item-danger');
+        } else {
+            messageElement.classList.add('list-group-item');
+        }
+
+        messageElement.textContent = message.sender + ': ' + message.content;
+        document.querySelector('#messages').appendChild(messageElement);
+    }
+
+    connect();
+</script>
+</body>
+</html>
