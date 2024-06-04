@@ -3,29 +3,29 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="icon" type="x/icon" href="images/lighting.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <title>Spring</title>
+    <title>Power-up</title>
 </head>
 <body>
     <header>
         <div class="nav-bar">
             <nav>
                 <ul class="nav-list">
-                    <a class="main-heading-a" href="/home"><h2 class="main-heading">Spring</h2><br></a>
-                    <a href="/home"><li class="nav-links">Home</li></a>
-                    <a href="/message"><li class="nav-links">Message</li></a>
-                    <a href="/new"><li class="nav-links">New</li></a>
-                    <a href="/search"><li class="nav-links">Search</li></a>
-                    <a href="/profile"><li class="nav-links">You!</li></a>
-                    <!-- Bruh -->
-                    <a class="main-heading-a-2" href="/login"><button id="post">Login/Sign up</button></a>
-                    <button id="logout-button">Logout</button>
+                    <img src="images/lighting.png" class="nav-icon">
+                    <a class="main-heading-a" href="/home"><h2 class="main-heading">Power-up</h2></a>
+                    <div class="search-div">
+                        <div id="search">Search Something</div>
+                        <div class="user">
+                            <img src="images/lighting.png" class="user-icon">
+                        </div>
+                    </div>
                 </ul>
             </nav>
         </div>
     </header>
-    <div class="container">
+    <!-- <div class="container">
         <div class="chat-window">
             <ul id="messages" class="list-group"></ul>
             <input type="text" id="username" placeholder="Enter your name" class="form-control">
@@ -85,6 +85,6 @@
         }
 
         connect();
-    </script>
+    </script> -->
 </body>
 </html>
